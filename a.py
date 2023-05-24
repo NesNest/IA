@@ -98,7 +98,7 @@ def population(size):
         guy.append(single())
     return guy
 def targetmaker():
-    targetA =  target(rm.randint(0,1024),rm.randint(0,1024))
+    targetA =  target(rm.randint(0,264),rm.randint(0,264))
     return targetA
 
 
@@ -106,7 +106,7 @@ def targetmaker():
 def assess(population, target):
     distances = []
     for i in range(len(population)):
-        distances.append(distance(population[i].positionx, population[i].positiony, target.positionx,target.positiony))     
+        distances.append(distance(population[i].aimx, population[i].aimy, target.positionx,target.positiony))     
         distances[i] = 1/(distances[i]+1)
     return distances
 
@@ -121,19 +121,14 @@ def fit(assess):
 
 #seleccion de los mejores
 def select(population, fit):
-    value = rm.random()
-    _i = 0
-    for i in range(len(population)-1):
-            _i = i
+    sub2, sub = 0,0 
+    total_fitness = sum(fit)
+    probabilities = [f / total_fitness for f in fit]
+    sub = rm.choices(population, probabilities)[0]
+    while True:
+        sub2 = rm.choices(population, probabilities)[0]
+        if sub2 != sub:
             break
-    sub = individual(population[_i].chain)
-    value = rm.random()
-    
-    for i in range(len(population)-1):
-        if (fit[i] < value):
-            _i = i
-            break
-    sub2 = individual(population[_i].chain)
     return sub, sub2
     
 #modificacion
@@ -144,14 +139,14 @@ def cross(ind, ind2):
     desc2 = individual(ind2.chain[0:point] + ind.chain[point:])
     return desc1, desc2
 def mutation(ind):
-    point = rm.randint(0,len(ind.chain))
+    point = rm.randint(0,len(ind.chain) - 1)
     des = ind.chain
     if(des[point] == 0):
         des[point] = 1
     else:
         des[point] = 0
-    individual(ind.chain)
-    return ind
+    indn = individual(des)
+    return indn
 
     
     
@@ -166,17 +161,25 @@ print(select(a, b))
 def _AE(size, cicles):
     trgt = targetmaker()
     pption = population(size)
+
     for i in range(cicles):
         ev = assess(pption, trgt)
         ft = fit(ev)
         npopulation = []
-        for j in range(cicles):
+        for j in range(int(size/2)):
             ind, ind2 = select(pption, ft)
             ind, ind2 = cross(ind, ind2)
             ind2 = mutation(ind2)
             npopulation.append(ind)
             npopulation.append(ind2)
-        pption = npopulation    
-    return npopulation
-_AE(10, 10)        
-            
+        pption = npopulation
+        pption = npopulation  
+        for i in range(size):
+            if (ev[i] > .99    ):
+                    definitive = npopulation[i]
+                    break
+
+        
+
+    return definitive
+          
