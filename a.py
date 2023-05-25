@@ -49,7 +49,8 @@ class tank:
         this.direction = 0
         this.speed = 0
         
-    def shoot(self, angle,speed, direction):
+    def shoot(self, angle, speed, direction):
+        speed = speed + 10
         xmax =  ((speed*speed)*mt.sin(mt.radians(angle*2)))/9.81
         x, y = polar(xmax, direction)
         x += self.positionx 
@@ -161,7 +162,8 @@ print(select(a, b))
 def _AE(size, cicles):
     trgt = targetmaker()
     pption = population(size)
-
+    check = False
+    print("El objetivo está en x:", trgt.positionx, "y:", trgt.positiony)
     for i in range(cicles):
         ev = assess(pption, trgt)
         ft = fit(ev)
@@ -174,12 +176,22 @@ def _AE(size, cicles):
             npopulation.append(ind2)
         pption = npopulation
         pption = npopulation  
-        for i in range(size):
-            if (ev[i] > .99    ):
-                    definitive = npopulation[i]
-                    break
+    for i in range(size):
+        if (ev[i] > .95 ):
+                definitive = npopulation[i]
+                check = True
+                break
+    if(check == True):
+        print("El tanque de la posición x:", definitive.positionx, "y:", definitive.positiony, 
+                "\nDispara en dirección", definitive.direction, "con un ángulo de", definitive.angle, 
+                "a una velocidad de", definitive.speed, "\nAcertando en x:",  definitive.aimx, "y:", definitive.aimy
+                )
+        return definitive
+    else:
+        print("No se han encontrado un tanque, pruebe aumentar los ciclos o la poblacion")
 
         
 
-    return definitive
+    
+_AE(100,1000)
           
