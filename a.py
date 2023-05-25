@@ -163,7 +163,7 @@ def _AE(size, cicles):
     trgt = targetmaker()
     pption = population(size)
     check = False
-    print("El objetivo está en x:", trgt.positionx, "y:", trgt.positiony)
+    print("El objetivo está en x:", trgt.positionx, " y:", trgt.positiony, sep = "")
     for i in range(cicles):
         ev = assess(pption, trgt)
         ft = fit(ev)
@@ -177,14 +177,15 @@ def _AE(size, cicles):
         pption = npopulation
         pption = npopulation  
     for i in range(size):
-        if (ev[i] > .95 ):
+        if (ev[i] > .5 ):
                 definitive = npopulation[i]
                 check = True
                 break
     if(check == True):
-        print("El tanque de la posición x:", definitive.positionx, "y:", definitive.positiony, 
-                "\nDispara en dirección", definitive.direction, "con un ángulo de", definitive.angle, 
-                "a una velocidad de", definitive.speed, "\nAcertando en x:",  definitive.aimx, "y:", definitive.aimy
+        print("El tanque de la posición x:", definitive.positionx, " y:", definitive.positiony, 
+                "\nDispara en dirección ", definitive.direction, " con un ángulo de ", definitive.angle, 
+                "a una velocidad de ", definitive.speed, "\nAcertando en x:",  definitive.aimx, " y:", 
+                definitive.aimy, "\n KAAAABOOOOOOOOOM", sep=""
                 )
         return definitive
     else:
@@ -193,5 +194,5 @@ def _AE(size, cicles):
         
 
     
-_AE(100,1000)
+_AE(100,100)
           
